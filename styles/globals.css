@@ -2,17 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* body {
-  background-color: #faf2ff !important;
-} */
+
 .grid-col {
   grid-template-columns: 16rem auto;
 }
-
 .active {
   @apply bg-violet-500/20 ml-0 border-l-4 pl-7 border-violet-500 text-violet-500;
 }
-
 .delivered {
   @apply text-green-500 dark:text-green-400;
 }
@@ -21,4 +17,17 @@
 }
 .declined {
   @apply text-red-500 dark:text-red-400;
+}
+
+/* customize input */
+input {
+  @apply border-2 border-violet-500 p-2 rounded-md w-full mt-1 outline-0
+}
+
+textarea {
+  @apply border-2 border-violet-500 p-2 rounded-md w-full mt-1 outline-0
+}
+
+button {
+  @apply flex gap-2 items-center py-2 px-4 rounded-md
 }
