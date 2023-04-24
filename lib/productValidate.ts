@@ -10,8 +10,10 @@ export const productValidate = (values: any): productType => {
 
   if (!values.product) {
     errors.product = 'Product name is required';
-  } else if (values.product.length > 20) {
-    errors.product = 'Must be 20 characters or less';
+  } else if (values.product.length < 10) {
+    errors.product = 'At list 10 characters or more';
+  } else if (values.product.length > 100) {
+    errors.product = 'At most 100 characters or less';
   }
 
   if (!values.price) {
@@ -20,8 +22,10 @@ export const productValidate = (values: any): productType => {
 
   if (!values.description) {
     errors.description = 'Description is required';
+  } else if (values.description.length < 50) {
+    errors.description = 'At list 50 characters or more';
   } else if (values.description.length > 400) {
-    errors.description = 'Must be 400 characters or less';
+    errors.description = 'At most 400 characters or less';
   }
 
   if (!values.photo) {
