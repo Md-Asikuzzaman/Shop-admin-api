@@ -2,7 +2,6 @@ interface productType {
   product: string;
   price: string;
   description: string;
-  photo: string;
 }
 
 export const productValidate = (values: any): productType => {
@@ -26,10 +25,6 @@ export const productValidate = (values: any): productType => {
     errors.description = 'At list 50 characters or more';
   } else if (values.description.length > 400) {
     errors.description = 'At most 400 characters or less';
-  }
-
-  if (!values.photo) {
-    errors.photo = 'Photo is required';
   }
 
   return errors;
