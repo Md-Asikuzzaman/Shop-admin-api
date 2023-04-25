@@ -13,7 +13,7 @@ import ReactImageFileToBase64 from 'react-file-image-to-base64';
 interface Props {}
 
 const Product: NextPage<Props> = ({}) => {
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<string[]>([]);
 
   const handleOnCompleted = (files: any) => {
     setImages(files[0]?.base64_file);
@@ -21,14 +21,14 @@ const Product: NextPage<Props> = ({}) => {
 
   // Form validation
   interface SignUpType {
-    product: string;
+    title: string;
     price: string;
     description: string;
   }
 
   const formik: FormikProps<SignUpType> = useFormik<SignUpType>({
     initialValues: {
-      product: '',
+      title: '',
       price: '',
       description: '',
     },
@@ -36,7 +36,6 @@ const Product: NextPage<Props> = ({}) => {
     validate: productValidate,
 
     onSubmit: async (values) => {
-
       console.log('TCL: values', values);
       console.log('TCL: images', images);
       formik.resetForm();
@@ -68,16 +67,16 @@ const Product: NextPage<Props> = ({}) => {
         <form onSubmit={formik.handleSubmit}>
           <div className='grid grid-cols-2 gap-5'>
             <div>
-              <label htmlFor='product'>Product Name:</label>
+              <label htmlFor='title'>Product Name:</label>
               <input
                 type='text'
-                id='product'
+                id='title'
                 placeholder='Product Name'
-                {...formik.getFieldProps('product')}
+                {...formik.getFieldProps('title')}
               />
               <p className='text-sm text-rose-500 mt-1'>
-                {formik.errors.product && formik.touched.product
-                  ? formik.errors.product
+                {formik.errors.title && formik.touched.title
+                  ? formik.errors.title
                   : null}
               </p>
             </div>

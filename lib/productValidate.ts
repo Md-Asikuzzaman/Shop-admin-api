@@ -1,5 +1,5 @@
 interface productType {
-  product: string;
+  title: string;
   price: string;
   description: string;
 }
@@ -7,12 +7,12 @@ interface productType {
 export const productValidate = (values: any): productType => {
   const errors: any = {};
 
-  if (!values.product) {
-    errors.product = 'Product name is required';
-  } else if (values.product.length < 10) {
-    errors.product = 'At list 10 characters or more';
-  } else if (values.product.length > 100) {
-    errors.product = 'At most 100 characters or less';
+  if (!values.title) {
+    errors.title = 'Product name is required';
+  } else if (values.title.length < 10) {
+    errors.title = 'At list 10 characters or more';
+  } else if (values.title.length > 100) {
+    errors.title = 'At most 100 characters or less';
   }
 
   if (!values.price) {
