@@ -15,19 +15,23 @@ import {
   fetchProducts,
   addProduct,
 } from '@/redux/features/product/productSlice';
+import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Props {}
 
-const Product: NextPage<Props> = ({}) => {
-  // fetch data
+const AddProduct: NextPage<Props> = ({}) => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
+  // fetch data
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
   const products = useAppSelector((state) => state.product);
-  console.log('TCL: data', products);
+  // console.log('TCL: data', products);
 
   // form validation start
   const [images, setImages] = useState<string[]>([]);
@@ -60,10 +64,16 @@ const Product: NextPage<Props> = ({}) => {
       };
 
       try {
-        dispatch(addProduct(formData));
-        formik.resetForm();
-        setImages([]);
-        alert('product created successfully!');
+        const val = dispatch(addProduct(formData));
+
+        if ((await val).meta.requestStatus == 'fulfilled') {
+          formik.resetForm();
+          setImages([]);
+          toast.success('Product Created');
+          router.push('/product');
+        } else {
+          console.log('product not created');
+        }
       } catch (error) {
         console.log(error);
       }
@@ -180,4 +190,4 @@ const Product: NextPage<Props> = ({}) => {
   );
 };
 
-export default Product;
+export default AddProduct;

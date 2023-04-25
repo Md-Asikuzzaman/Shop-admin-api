@@ -21,6 +21,7 @@ export default async function handler(
 
   if (req.method === 'POST') {
     const data = req.body;
+    console.log("TCL: data", data)
     try {
       const newProduct = await Product.create(data);
       res.status(200).json(newProduct);

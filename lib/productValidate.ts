@@ -21,7 +21,7 @@ export const productValidate = (values: any): productType => {
 
   if (!values.description) {
     errors.description = 'Description is required';
-  } else if (values.description.length < 50) {
+  } else if (values.description.length < 5) {
     errors.description = 'At list 50 characters or more';
   } else if (values.description.length > 400) {
     errors.description = 'At most 400 characters or less';

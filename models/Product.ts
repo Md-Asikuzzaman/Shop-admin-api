@@ -13,7 +13,7 @@ const productSchema = new Schema<ProductType>({
   title: { type: String, required: true },
   description: { type: String, required: true },
   price: { type: Number, required: true },
-  photo: { type: String, required: false },
+  photo: { type: String },
 });
 
 const Product = models.Product || model<ProductType>('Product', productSchema);

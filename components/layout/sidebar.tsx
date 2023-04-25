@@ -88,7 +88,8 @@ const Sidebar: NextPage<Props> = ({}) => {
 
         <Link
           className={`flex items-center gap-4 text-md text-slate-500 h-12 ml-8 duration-300 dark:text-slate-400 ${
-            router.asPath == '/product'
+            router.asPath == '/product' ||
+            router.asPath == '/product/add-product'
               ? 'active'
               : 'hover:text-violet-500 hover:ml-12'
           }`}
