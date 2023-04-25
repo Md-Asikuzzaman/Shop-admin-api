@@ -30,9 +30,6 @@ const AddProduct: NextPage<Props> = ({}) => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  const products = useAppSelector((state) => state.product);
-  // console.log('TCL: data', products);
-
   // form validation start
   const [images, setImages] = useState<string[]>([]);
 
@@ -45,6 +42,8 @@ const AddProduct: NextPage<Props> = ({}) => {
     price: string;
     description: string;
   }
+
+  const createdToast = () => toast.success('Product Created');
 
   const formik: FormikProps<SignUpType> = useFormik<SignUpType>({
     initialValues: {
@@ -69,8 +68,10 @@ const AddProduct: NextPage<Props> = ({}) => {
         if ((await val).meta.requestStatus == 'fulfilled') {
           formik.resetForm();
           setImages([]);
-          toast.success('Product Created');
-          router.push('/product');
+          createdToast();
+          setTimeout(() => {
+            router.push('/product');
+          }, 300);
         } else {
           console.log('product not created');
         }

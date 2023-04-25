@@ -1,9 +1,9 @@
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
-import { ToastContainer } from 'react-toastify';
 import { Poppins } from 'next/font/google';
 import store from '@/redux/store';
+import { ToastContainer } from 'react-toastify';
 
 const poppins = Poppins({
   weight: '400',
