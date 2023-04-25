@@ -1,7 +1,8 @@
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
-
+import { Provider } from 'react-redux';
 import { Poppins } from 'next/font/google';
+import store from '@/redux/store';
 
 const poppins = Poppins({
   weight: '400',
@@ -11,8 +12,10 @@ const poppins = Poppins({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <main className={poppins.className}>
-      <Component {...pageProps} />
-    </main>
+    <Provider store={store}>
+      <main className={poppins.className}>
+        <Component {...pageProps} />
+      </main>
+    </Provider>
   );
 }

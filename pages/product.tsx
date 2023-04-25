@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Layout from '@/components/layout/layout';
 import { NextPage } from 'next';
 import {
@@ -9,17 +10,32 @@ import { useFormik, FormikProps } from 'formik';
 import { useState } from 'react';
 import { productValidate } from '@/lib/productValidate';
 import ReactImageFileToBase64 from 'react-file-image-to-base64';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks/hooks';
+import {
+  fetchProducts,
+  addProduct,
+} from '@/redux/features/product/productSlice';
 
 interface Props {}
 
 const Product: NextPage<Props> = ({}) => {
+  // fetch data
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  const products = useAppSelector((state) => state.product);
+  console.log('TCL: data', products);
+
+  // form validation start
   const [images, setImages] = useState<string[]>([]);
 
   const handleOnCompleted = (files: any) => {
     setImages(files[0]?.base64_file);
   };
 
-  // Form validation
   interface SignUpType {
     title: string;
     price: string;
@@ -36,16 +52,30 @@ const Product: NextPage<Props> = ({}) => {
     validate: productValidate,
 
     onSubmit: async (values) => {
-      console.log('TCL: values', values);
-      console.log('TCL: images', images);
-      formik.resetForm();
+      const formData = {
+        title: values.title,
+        price: values.price,
+        description: values.description,
+        photo: images,
+      };
+
+      try {
+        dispatch(addProduct(formData));
+        formik.resetForm();
+        setImages([]);
+        alert('product created successfully!');
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
 
   const removePhoto = () => {
     setImages([]);
   };
+  // form validation end
 
+  // custom file-base-64 design
   const CustomisedButton = ({ triggerInput }: any) => {
     return (
       <div onClick={triggerInput}>

@@ -9,7 +9,7 @@ export const productValidate = (values: any): productType => {
 
   if (!values.title) {
     errors.title = 'Product name is required';
-  } else if (values.title.length < 10) {
+  } else if (values.title.length < 3) {
     errors.title = 'At list 10 characters or more';
   } else if (values.title.length > 100) {
     errors.title = 'At most 100 characters or less';
