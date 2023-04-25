@@ -22,8 +22,8 @@ export default async function handler(
   if (req.method === 'POST') {
     const data = req.body;
     try {
-      const newProduct = await Product.create(data);
-      res.status(200).json(newProduct);
+      await Product.create(data);
+      res.status(201).json({ message: 'user created' });
     } catch (error) {
       res.status(500).json('Something wrong!');
     }

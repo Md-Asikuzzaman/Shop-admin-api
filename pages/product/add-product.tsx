@@ -17,7 +17,6 @@ import {
 } from '@/redux/features/product/productSlice';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 interface Props {}
 
@@ -43,8 +42,6 @@ const AddProduct: NextPage<Props> = ({}) => {
     description: string;
   }
 
-  const createdToast = () => toast.success('Product Created');
-
   const formik: FormikProps<SignUpType> = useFormik<SignUpType>({
     initialValues: {
       title: '',
@@ -68,7 +65,7 @@ const AddProduct: NextPage<Props> = ({}) => {
         if ((await val).meta.requestStatus == 'fulfilled') {
           formik.resetForm();
           setImages('');
-          createdToast();
+          toast.success('Product Created');
           setTimeout(() => {
             router.push('/product');
           }, 300);
@@ -90,7 +87,7 @@ const AddProduct: NextPage<Props> = ({}) => {
   const CustomisedButton = ({ triggerInput }: any) => {
     return (
       <div onClick={triggerInput}>
-        <div className='bg-violet-100 flex flex-col items-center p-5 rounded-lg cursor-pointer border-2 border-dashed border-violet-400'>
+        <div className='bg-violet-100 flex flex-col items-center p-5 rounded-lg cursor-pointer border-2 border-dashed border-violet-400 dark:bg-slate-900'>
           <AiOutlineCloudUpload className='text-5xl text-violet-500' />
           <h4 className='mt-3 text-violet-500'>Upload Product Photo</h4>
         </div>
@@ -108,8 +105,11 @@ const AddProduct: NextPage<Props> = ({}) => {
         <form onSubmit={formik.handleSubmit}>
           <div className='grid grid-cols-2 gap-5'>
             <div>
-              <label htmlFor='title'>Product Name:</label>
+              <label className='dark:text-slate-300' htmlFor='title'>
+                Product Name:
+              </label>
               <input
+                className='dark:bg-slate-900 dark:text-white'
                 type='text'
                 id='title'
                 placeholder='Product Name'
@@ -122,8 +122,11 @@ const AddProduct: NextPage<Props> = ({}) => {
               </p>
             </div>
             <div>
-              <label htmlFor='price'>Price (in USD)</label>
+              <label className='dark:text-slate-300' htmlFor='price'>
+                Price (in USD)
+              </label>
               <input
+                className='dark:bg-slate-900 dark:text-white'
                 type='number'
                 id='price'
                 placeholder='Product Price'
@@ -138,8 +141,11 @@ const AddProduct: NextPage<Props> = ({}) => {
           </div>
 
           <div className='mt-3'>
-            <label htmlFor='desc'>Description:</label>
+            <label className='dark:text-slate-300' htmlFor='desc'>
+              Description:
+            </label>
             <textarea
+              className='dark:bg-slate-900 dark:text-white'
               id='desc'
               placeholder='Product Description'
               rows={5}
@@ -176,7 +182,7 @@ const AddProduct: NextPage<Props> = ({}) => {
                   />
                 </div>
               ) : (
-                <p>No Photos in this product</p>
+                <p className='dark:text-violet-200'>No Photos in this product</p>
               )}
             </div>
           </div>

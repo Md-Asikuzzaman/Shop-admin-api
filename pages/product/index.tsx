@@ -2,22 +2,34 @@ import { useEffect } from 'react';
 import Layout from '@/components/layout/layout';
 import { NextPage } from 'next';
 import Link from 'next/link';
-import { AiFillCheckCircle, AiOutlinePlus } from 'react-icons/ai';
+import { AiOutlinePlus, AiFillEdit } from 'react-icons/ai';
+import { toast } from 'react-toastify';
 import { BsFillEyeFill } from 'react-icons/bs';
 import { MdDelete } from 'react-icons/md';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/hooks';
-import { fetchProducts } from '@/redux/features/product/productSlice';
+import {
+  fetchProducts,
+  deleteProduct,
+} from '@/redux/features/product/productSlice';
 
 interface Props {}
 
 const Index: NextPage<Props> = ({}) => {
   const dispatch = useAppDispatch();
   const data = useAppSelector((state) => state.product);
-  console.log('TCL: products', data);
 
   useEffect(() => {
     dispatch(fetchProducts());
-  }, []);
+  }, [dispatch]);
+
+  // product deletion
+  const handleProductDelete = (id: string, e: any) => {
+    e.preventDefault();
+    if (window.confirm('Are you sure to delete?')) {
+      dispatch(deleteProduct(id));
+      toast.warning('Product Deleted!!!');
+    }
+  };
 
   return (
     <Layout>
@@ -47,19 +59,25 @@ const Index: NextPage<Props> = ({}) => {
             <tbody>
               {data.loading ? (
                 <tr>
-                  <td>1</td>
+                  <td className='py-6 text-violet-500' colSpan={5}>
+                    <b>Loading...</b>
+                  </td>
                 </tr>
-              ) : (
+              ) : data.products?.length > 0 ? (
                 data.products.map((product) => (
                   <tr
-                    key={product._id}
+                    key={product?._id || Math.random() * 99999}
                     className='h-12 border-b border-slate-200 dark:border-slate-700 dark:text-slate-300'
                   >
-                    <td>{product.title}</td>
-                    <td>{product.description.slice(0, 20)}...</td>
+                    <td>
+                      {product?.title?.length > 15
+                        ? product.title?.slice(0, 15) + '...'
+                        : product.title}
+                    </td>
+                    <td>{product.description?.slice(0, 20)}...</td>
                     <td>${product.price}</td>
                     <td>
-                      {product.photo.length > 10 ? (
+                      {product.photo?.length > 10 ? (
                         <img
                           className='h-10 mx-auto'
                           src={`${product.photo}`}
@@ -71,12 +89,23 @@ const Index: NextPage<Props> = ({}) => {
                     </td>
 
                     <td className=' flex gap-2 items-center justify-center h-10'>
-                      <MdDelete className='text-xl cursor-pointer text-slate-500' />
-                      <AiFillCheckCircle className='text-xl cursor-pointer text-slate-500' />
+                      <Link href={`/product/edit-product?id=${product._id}`}>
+                        <AiFillEdit className='text-xl cursor-pointer text-slate-500' />
+                      </Link>
                       <BsFillEyeFill className='text-xl cursor-pointer text-slate-500' />
+                      <MdDelete
+                        onClick={(e) => handleProductDelete(product._id, e)}
+                        className='text-xl cursor-pointer text-slate-500'
+                      />
                     </td>
                   </tr>
                 ))
+              ) : (
+                <tr>
+                  <td className='py-6 text-violet-500' colSpan={5}>
+                    <b>No Product Available</b>
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>
