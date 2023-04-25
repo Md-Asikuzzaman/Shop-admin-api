@@ -10,7 +10,7 @@ import { useFormik, FormikProps } from 'formik';
 import { useState } from 'react';
 import { productValidate } from '@/lib/productValidate';
 import ReactImageFileToBase64 from 'react-file-image-to-base64';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks/hooks';
+import { useAppDispatch } from '@/redux/hooks/hooks';
 import {
   fetchProducts,
   addProduct,
@@ -31,7 +31,7 @@ const AddProduct: NextPage<Props> = ({}) => {
   }, [dispatch]);
 
   // form validation start
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<string>('');
 
   const handleOnCompleted = (files: any) => {
     setImages(files[0]?.base64_file);
@@ -67,7 +67,7 @@ const AddProduct: NextPage<Props> = ({}) => {
 
         if ((await val).meta.requestStatus == 'fulfilled') {
           formik.resetForm();
-          setImages([]);
+          setImages('');
           createdToast();
           setTimeout(() => {
             router.push('/product');
@@ -82,7 +82,7 @@ const AddProduct: NextPage<Props> = ({}) => {
   });
 
   const removePhoto = () => {
-    setImages([]);
+    setImages('');
   };
   // form validation end
 
