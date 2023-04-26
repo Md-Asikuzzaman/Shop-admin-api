@@ -15,7 +15,7 @@ export default async function handler(
       const products = await Product.find({});
       res.status(200).json(products);
     } catch (error) {
-      res.status(500).json('Something wrong!');
+      res.status(500).json('Something went wrong!');
     }
   }
 
@@ -23,7 +23,7 @@ export default async function handler(
     const data = req.body;
     try {
       await Product.create(data);
-      res.status(201).json({ message: 'user created' });
+      res.status(201).json({ message: 'Product created successfully!' });
     } catch (error) {
       res.status(500).json('Something wrong!');
     }

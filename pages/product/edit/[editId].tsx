@@ -5,48 +5,59 @@ import {
   AiOutlineCloudUpload,
   AiOutlineCloseCircle,
   AiOutlinePlus,
+  AiOutlineEdit,
 } from 'react-icons/ai';
 import { useFormik, FormikProps } from 'formik';
 import { useState } from 'react';
 import { productValidate } from '@/lib/productValidate';
 import ReactImageFileToBase64 from 'react-file-image-to-base64';
-import { useAppDispatch } from '@/redux/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks/hooks';
 import {
   fetchProducts,
   addProduct,
+  updateProduct,
 } from '@/redux/features/product/productSlice';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 
 interface Props {}
 
-const AddProduct: NextPage<Props> = ({}) => {
+const EditProduct: NextPage<Props> = ({}) => {
+  const [images, setImages] = useState<string>('');
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const { editId } = router.query;
+
+  // use selector
+  const products = useAppSelector((state) => state.product);
+
+  const product = products.products.find((pro) =>
+    pro._id == editId ? pro : null
+  );
 
   // fetch data
   useEffect(() => {
     dispatch(fetchProducts());
-  }, [dispatch]);
 
-  // form validation start
-  const [images, setImages] = useState<string>('');
+    setImages(product?.photo ? product.photo : '');
+  }, [dispatch]);
 
   const handleOnCompleted = (files: any) => {
     setImages(files[0]?.base64_file);
   };
 
+  // form validation start
   interface SignUpType {
     title: string;
-    price: string;
+    price: number;
     description: string;
   }
 
   const formik: FormikProps<SignUpType> = useFormik<SignUpType>({
     initialValues: {
-      title: '',
-      price: '',
-      description: '',
+      title: product?.title ? product.title : '',
+      price: product?.price ? product.price : 0,
+      description: product?.description ? product.description : '',
     },
 
     validate: productValidate,
@@ -57,21 +68,24 @@ const AddProduct: NextPage<Props> = ({}) => {
         price: values.price,
         description: values.description,
         photo: images,
+        id: editId,
       };
 
       try {
-        const val = dispatch(addProduct(formData));
+        const val = dispatch(updateProduct({ formData }));
 
         if ((await val).meta.requestStatus == 'fulfilled') {
           formik.resetForm();
           setImages('');
-          toast.success('Product Created');
+          toast.success('Product Updated');
           setTimeout(() => {
             router.push('/product');
           }, 300);
         } else {
-          console.log('product not created');
+          console.log('product not updated');
         }
+
+        console.log(formData);
       } catch (error) {
         console.log(error);
       }
@@ -99,7 +113,7 @@ const AddProduct: NextPage<Props> = ({}) => {
     <Layout>
       <div className='bg-white rounded-lg shadow-md p-5 dark:bg-slate-800'>
         <h2 className='text-xl font-bold mb-2 dark:text-slate-300'>
-          Add Product
+          Update Product
         </h2>
 
         <form onSubmit={formik.handleSubmit}>
@@ -166,20 +180,26 @@ const AddProduct: NextPage<Props> = ({}) => {
                 CustomisedButton={CustomizedButton}
               />
             </div>
-
             <div className='flex flex-wrap gap-3'>
-              {images?.length > 0 ? (
+              {images?.length > 0 || product?.photo ? (
                 <div className='relative'>
-                  <AiOutlineCloseCircle
-                    onClick={removePhoto}
-                    className='absolute top-2 right-2 z-10 text-slate-100 text-2xl hover:text-red-400 cursor-pointer'
-                  />
-
-                  <img
-                    className='h-32'
-                    src={images ? `${images}` : ''}
-                    alt='phot0'
-                  />
+                  {images ? (
+                    <>
+                      <AiOutlineCloseCircle
+                        onClick={removePhoto}
+                        className='absolute top-2 right-2 z-10 text-slate-100 text-2xl hover:text-red-400 cursor-pointer'
+                      />
+                      <img
+                        className='h-32'
+                        src={images ? `${images}` : product?.photo}
+                        alt='phot0'
+                      />
+                    </>
+                  ) : (
+                    <p className='dark:text-violet-200'>
+                      No Photos in this product
+                    </p>
+                  )}
                 </div>
               ) : (
                 <p className='dark:text-violet-200'>
@@ -190,8 +210,8 @@ const AddProduct: NextPage<Props> = ({}) => {
           </div>
 
           <button className='bg-violet-500 text-white mt-4' type='submit'>
-            <AiOutlinePlus />
-            Add product
+            <AiOutlineEdit />
+            Update product
           </button>
         </form>
       </div>
@@ -199,4 +219,4 @@ const AddProduct: NextPage<Props> = ({}) => {
   );
 };
 
-export default AddProduct;
+export default EditProduct;

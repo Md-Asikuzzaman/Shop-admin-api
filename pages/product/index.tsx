@@ -89,7 +89,7 @@ const Index: NextPage<Props> = ({}) => {
                     </td>
 
                     <td className=' flex gap-2 items-center justify-center h-10'>
-                      <Link href={`/product/edit-product?id=${product._id}`}>
+                      <Link href={`/product/edit/${product._id}`}>
                         <AiFillEdit className='text-xl cursor-pointer text-slate-500' />
                       </Link>
                       <BsFillEyeFill className='text-xl cursor-pointer text-slate-500' />

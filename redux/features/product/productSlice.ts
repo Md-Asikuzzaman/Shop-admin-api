@@ -21,6 +21,7 @@ const initialState: DataType = {
   error: '',
 };
 
+// FETCH PRODUCTS
 export const fetchProducts = createAsyncThunk(
   'product/fetchProducts',
   async () => {
@@ -32,24 +33,39 @@ export const fetchProducts = createAsyncThunk(
     }
   }
 );
-
+// ADD PRODUCT
 export const addProduct = createAsyncThunk(
   'product/addProduct',
-  async (product: any) => {
+  async (data: any) => {
     try {
-      const res = await axios.post('/api/product', product);
+      const res = await axios.post('/api/product', data);
       return res.data;
     } catch (error) {
       console.log(error);
     }
   }
 );
-
+// DELETE PRODUCT
 export const deleteProduct = createAsyncThunk(
   'product/deleteProduct',
   async (id: any) => {
     try {
       const res = await axios.delete(`/api/product/${id}`);
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+// UPDATE PRODUCT
+export const updateProduct = createAsyncThunk(
+  'product/updateProduct',
+  async (data: any) => {
+    const { id } = data.formData;
+
+    try {
+      console.log('TCL: data', id);
+      const res = await axios.put(`/api/product/${id}`, data);
       return res.data;
     } catch (error) {
       console.log(error);
@@ -115,16 +131,36 @@ const productSlice = createSlice({
       deleteProduct.fulfilled,
       (state, action: PayloadAction<any>) => {
         state.loading = false;
-
         state.products = state.products.filter(
           (product) => String(product._id) !== String(action.payload?.id)
         );
-
         state.error = '';
       }
     );
 
     builder.addCase(deleteProduct.rejected, (state, action) => {
+      state.loading = true;
+      state.error = action.error.message || 'Something went wrong!!!';
+    });
+
+    // update product
+    builder.addCase(updateProduct.pending, (state, action) => {
+      state.loading = true;
+      state.error = '';
+    });
+
+    builder.addCase(
+      updateProduct.fulfilled,
+      (state, action: PayloadAction<any>) => {
+        state.loading = false;
+        state.products = state.products.map((data) =>
+          data._id === action.payload.id ? action.payload.data : data
+        );
+        state.error = '';
+      }
+    );
+
+    builder.addCase(updateProduct.rejected, (state, action) => {
       state.loading = true;
       state.error = action.error.message || 'Something went wrong!!!';
     });
