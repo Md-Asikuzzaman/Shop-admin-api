@@ -27,9 +27,9 @@ export const fetchProducts = createAsyncThunk(
   async () => {
     try {
       const res = await axios.get('/api/product');
-      return res.data;
-    } catch (error) {
-      console.log(error);
+      return res.data.products;
+    } catch (error: any) {
+      throw new Error(error);
     }
   }
 );
@@ -40,8 +40,8 @@ export const addProduct = createAsyncThunk(
     try {
       const res = await axios.post('/api/product', data);
       return res.data;
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      throw new Error(error);
     }
   }
 );
@@ -52,8 +52,8 @@ export const deleteProduct = createAsyncThunk(
     try {
       const res = await axios.delete(`/api/product/${id}`);
       return res.data;
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      throw new Error(error);
     }
   }
 );
@@ -64,11 +64,10 @@ export const updateProduct = createAsyncThunk(
     const { id } = data.formData;
 
     try {
-      console.log('TCL: data', id);
       const res = await axios.put(`/api/product/${id}`, data);
       return res.data;
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      throw new Error(error);
     }
   }
 );
@@ -111,7 +110,6 @@ const productSlice = createSlice({
       (state, action: PayloadAction<ProductType>) => {
         state.loading = false;
         state.products.push(action.payload);
-        console.log('TCL: action.payload', action.payload);
         state.error = '';
       }
     );

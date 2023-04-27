@@ -70,10 +70,10 @@ const AddProduct: NextPage<Props> = ({}) => {
             router.push('/product');
           }, 300);
         } else {
-          console.log('product not created');
+          throw new Error('product not created');
         }
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        throw new Error(error);
       }
     },
   });

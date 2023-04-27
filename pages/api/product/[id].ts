@@ -2,7 +2,11 @@ import dbConnect from '@/lib/dbConnect';
 import Product from '@/models/Product';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-interface Data {}
+interface Data {
+  message?: string;
+  id?: any;
+  data?: any;
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,7 +20,7 @@ export default async function handler(
       await Product.findByIdAndDelete({ _id: id });
       res.status(200).json({ message: 'Product deleted successfully', id });
     } catch (error) {
-      res.status(500).json('Something wrong!');
+      res.status(500).json({ message: 'Something wrong!' });
     }
   }
 
@@ -33,7 +37,7 @@ export default async function handler(
 
       res.status(200).json({ message: 'Product Updated!!!', id, data });
     } catch (error) {
-      res.status(500).json('Something wrong!');
+      res.status(500).json({ message: 'Something wrong!' });
     }
   }
 }

@@ -82,12 +82,10 @@ const EditProduct: NextPage<Props> = ({}) => {
             router.push('/product');
           }, 300);
         } else {
-          console.log('product not updated');
+          throw new Error('product not updated');
         }
-
-        console.log(formData);
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        throw new Error(error);
       }
     },
   });
