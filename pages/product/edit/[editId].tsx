@@ -28,14 +28,12 @@ const EditProduct: NextPage<Props> = ({}) => {
   const router = useRouter();
   const { editId } = router.query;
 
-  // use selector
   const products = useAppSelector((state) => state.product);
-
-  const product = products.products.find((pro) =>
-    pro._id == editId ? pro : null
+  const product = products.products.find((product) =>
+    product._id == editId ? product : null
   );
 
-  // fetch data
+  // FETCH PRODUCTS
   useEffect(() => {
     dispatch(fetchProducts());
 
@@ -46,7 +44,7 @@ const EditProduct: NextPage<Props> = ({}) => {
     setImages(files[0]?.base64_file);
   };
 
-  // form validation start
+  // FORM VALIDATION
   interface SignUpType {
     title: string;
     price: number;
@@ -93,9 +91,8 @@ const EditProduct: NextPage<Props> = ({}) => {
   const removePhoto = () => {
     setImages('');
   };
-  // form validation end
 
-  // custom file-base-64 design
+  // CUSTOM FILE-BASE-64 UI
   const CustomizedButton = ({ triggerInput }: any) => {
     return (
       <div className='z-10' onClick={triggerInput}>

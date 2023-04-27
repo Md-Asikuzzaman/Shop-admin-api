@@ -77,7 +77,7 @@ const productSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    // fetch products
+    // FETCH PRODUCT
     builder.addCase(fetchProducts.pending, (state, action) => {
       state.loading = true;
       state.products = [];
@@ -99,7 +99,7 @@ const productSlice = createSlice({
       state.error = action.error.message || 'Something went wrong!!!';
     });
 
-    // add product
+    // ADD PRODUCT
     builder.addCase(addProduct.pending, (state, action) => {
       state.loading = true;
       state.error = '';
@@ -119,7 +119,7 @@ const productSlice = createSlice({
       state.error = action.error.message || 'Something went wrong!!!';
     });
 
-    // delete product
+    // DELETE PRODUCT
     builder.addCase(deleteProduct.pending, (state, action) => {
       state.loading = true;
       state.error = '';
@@ -141,7 +141,7 @@ const productSlice = createSlice({
       state.error = action.error.message || 'Something went wrong!!!';
     });
 
-    // update product
+    // UPDATE PRODUCT
     builder.addCase(updateProduct.pending, (state, action) => {
       state.loading = true;
       state.error = '';

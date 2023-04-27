@@ -24,12 +24,12 @@ const AddProduct: NextPage<Props> = ({}) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  // fetch data
+  // FETCH PRODUCTS
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  // form validation start
+  // FORM VALIDATION
   const [images, setImages] = useState<string>('');
 
   const handleOnCompleted = (files: any) => {
@@ -48,9 +48,7 @@ const AddProduct: NextPage<Props> = ({}) => {
       price: '',
       description: '',
     },
-
     validate: productValidate,
-
     onSubmit: async (values) => {
       const formData = {
         title: values.title,
@@ -81,9 +79,8 @@ const AddProduct: NextPage<Props> = ({}) => {
   const removePhoto = () => {
     setImages('');
   };
-  // form validation end
 
-  // custom file-base-64 design
+  // CUSTOM FILE-BASE-64 UI
   const CustomizedButton = ({ triggerInput }: any) => {
     return (
       <div className='z-10' onClick={triggerInput}>

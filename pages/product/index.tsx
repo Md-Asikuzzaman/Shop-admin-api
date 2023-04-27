@@ -22,7 +22,7 @@ const Index: NextPage<Props> = ({}) => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  // product deletion
+  // HANDLE PRODUCT DELETE
   const handleProductDelete = (id: string, e: any) => {
     e.preventDefault();
     if (window.confirm('Are you sure to delete?')) {
