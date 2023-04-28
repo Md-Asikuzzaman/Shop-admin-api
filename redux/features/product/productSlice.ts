@@ -7,6 +7,8 @@ interface ProductType {
   description: string;
   price: number;
   photo: string;
+  createdAt?: any;
+  updatedAt?: any;
 }
 
 interface DataType {
@@ -33,6 +35,8 @@ export const fetchProducts = createAsyncThunk(
     }
   }
 );
+
+
 // ADD PRODUCT
 export const addProduct = createAsyncThunk(
   'product/addProduct',

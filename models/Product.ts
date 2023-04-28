@@ -9,12 +9,15 @@ interface ProductType {
 }
 
 // 2. Create a Schema corresponding to the document interface.
-const productSchema = new Schema<ProductType>({
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  price: { type: Number, required: true },
-  photo: { type: String },
-});
+const productSchema = new Schema<ProductType>(
+  {
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    price: { type: Number, required: true },
+    photo: { type: String },
+  },
+  { timestamps: true }
+);
 
 const Product = models.Product || model<ProductType>('Product', productSchema);
 export default Product;

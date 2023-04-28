@@ -5,6 +5,13 @@
 .grid-col {
   grid-template-columns: 16rem auto;
 }
+
+@media screen and (max-width: 1024px) {
+  .grid-col {
+    grid-template-columns: 1fr;
+  }
+}
+
 .active {
   @apply bg-violet-500/20 ml-0 border-l-4 pl-7 border-violet-500 text-violet-500;
 }
@@ -23,7 +30,7 @@ input {
   @apply border-2 border-violet-500 p-2 rounded-md w-full mt-1 outline-0;
 }
 
-textarea {
+textarea, select {
   @apply border-2 border-violet-500 p-2 rounded-md w-full mt-1 outline-0;
 }
 

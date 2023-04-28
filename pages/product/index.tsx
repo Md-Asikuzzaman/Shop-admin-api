@@ -23,8 +23,7 @@ const Index: NextPage<Props> = ({}) => {
   }, [dispatch]);
 
   // HANDLE PRODUCT DELETE
-  const handleProductDelete = (id: string, e: any) => {
-    e.preventDefault();
+  const handleProductDelete = (id: string) => {
     if (window.confirm('Are you sure to delete?')) {
       dispatch(deleteProduct(id));
       toast.warning('Product Deleted!!!');
@@ -94,7 +93,7 @@ const Index: NextPage<Props> = ({}) => {
                       </Link>
                       <BsFillEyeFill className='text-xl cursor-pointer text-slate-500' />
                       <MdDelete
-                        onClick={(e) => handleProductDelete(product._id, e)}
+                        onClick={() => handleProductDelete(product._id)}
                         className='text-xl cursor-pointer text-slate-500'
                       />
                     </td>

@@ -1,6 +1,7 @@
 import { NextPage } from 'next';
 import Sidebar from './sidebar';
 import { AiFillDashboard } from 'react-icons/ai';
+import { FiMenu } from 'react-icons/fi';
 import { BsFillMoonFill, BsFillSunFill } from 'react-icons/bs';
 import { useEffect, useState } from 'react';
 
@@ -8,6 +9,7 @@ interface Props {}
 
 const Layout: NextPage<Props> = ({ children }: any) => {
   const [dark, setDark] = useState(false);
+  const [menu, setMenu] = useState<boolean>(false);
 
   useEffect(() => {
     if (
@@ -39,12 +41,20 @@ const Layout: NextPage<Props> = ({ children }: any) => {
     }
   };
 
+  const handleMenu = () => {
+    setMenu(true);
+  };
+
   return (
     <div className='w-[96%] mx-auto min-h-screen grid grid-col gap-10'>
-      <Sidebar />
+      <Sidebar menu={menu} setMenu={setMenu} />
       <section>
         <div className='flex justify-between items-center py-3 mb-5'>
           <div className='flex items-center gap-5'>
+            <FiMenu
+              onClick={handleMenu}
+              className='text-4xl text-violet-500 cursor-pointer lg:hidden'
+            />
             <AiFillDashboard className='text-4xl text-violet-500' />
             <h1 className='text-3xl font-bold dark:text-slate-400'>
               Dashboard

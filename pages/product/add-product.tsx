@@ -36,13 +36,13 @@ const AddProduct: NextPage<Props> = ({}) => {
     setImages(files[0]?.base64_file);
   };
 
-  interface SignUpType {
+  interface ProductType {
     title: string;
     price: string;
     description: string;
   }
 
-  const formik: FormikProps<SignUpType> = useFormik<SignUpType>({
+  const formik: FormikProps<ProductType> = useFormik<ProductType>({
     initialValues: {
       title: '',
       price: '',
