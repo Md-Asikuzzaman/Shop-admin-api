@@ -10,13 +10,14 @@ import { useFormik, FormikProps } from 'formik';
 import { useState } from 'react';
 import { productValidate } from '@/lib/productValidate';
 import ReactImageFileToBase64 from 'react-file-image-to-base64';
-import { useAppDispatch } from '@/redux/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks/hooks';
 import {
-  fetchProducts,
+  // fetchProducts,
   addProduct,
 } from '@/redux/features/product/productSlice';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import { fetchCategories } from '@/redux/features/category/categorySlice';
 
 interface Props {}
 
@@ -26,8 +27,12 @@ const AddProduct: NextPage<Props> = ({}) => {
 
   // FETCH PRODUCTS
   useEffect(() => {
-    dispatch(fetchProducts());
+    // dispatch(fetchProducts());
+    dispatch(fetchCategories());
   }, [dispatch]);
+
+  const category = useAppSelector((state) => state.category);
+  // console.log('TCL: category', category.category);
 
   // FORM VALIDATION
   const [images, setImages] = useState<string>('');
@@ -40,6 +45,8 @@ const AddProduct: NextPage<Props> = ({}) => {
     title: string;
     price: string;
     description: string;
+    color: string;
+    category: string;
   }
 
   const formik: FormikProps<ProductType> = useFormik<ProductType>({
@@ -47,19 +54,22 @@ const AddProduct: NextPage<Props> = ({}) => {
       title: '',
       price: '',
       description: '',
+      color: '',
+      category: '',
     },
     validate: productValidate,
     onSubmit: async (values) => {
       const formData = {
         title: values.title,
         price: values.price,
+        color: values.color,
         description: values.description,
+        category: values.category,
         photo: images,
       };
+      const val = dispatch(addProduct(formData));
 
       try {
-        const val = dispatch(addProduct(formData));
-
         if ((await val).meta.requestStatus == 'fulfilled') {
           formik.resetForm();
           setImages('');
@@ -134,6 +144,33 @@ const AddProduct: NextPage<Props> = ({}) => {
                   ? formik.errors?.price
                   : null}
               </p>
+            </div>
+          </div>
+
+          <div className='grid grid-cols-2 gap-5 mt-3'>
+            <div>
+              <label htmlFor='category'>Select a Category</label>
+              <select id='category' {...formik.getFieldProps('category')}>
+                <option value=''>No Selected Category</option>
+                {category.loading
+                  ? 'Loading'
+                  : category.category.length > 0
+                  ? category.category.map((cat) => (
+                      <option key={cat._id} value={cat._id}>
+                        {cat.category}
+                      </option>
+                    ))
+                  : ''}
+              </select>
+            </div>
+            <div>
+              <label htmlFor='color'>Colors (_,_)</label>
+              <input
+                type='text'
+                placeholder='Use coma for separated colors (red, green)'
+                id='color'
+                {...formik.getFieldProps('color')}
+              />
             </div>
           </div>
 

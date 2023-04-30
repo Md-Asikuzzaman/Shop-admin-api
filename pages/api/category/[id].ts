@@ -20,4 +20,22 @@ export default async function handler(
       res.status(500).json({ message: 'Something wrong!' });
     }
   }
+
+  // UPDATE CATEGORY
+  if (req.method === 'PUT') {
+    const { id } = req.query;
+    const formData = req.body;
+
+    try {
+      const exist = await Category.findOne({ _id: id });
+      if (exist) {
+        const data = await Category.findByIdAndUpdate({ _id: id }, formData, {
+          new: true,
+        });
+        res.status(200).json({ message: 'Product Updated!!!', id, data });
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Something wrong!' });
+    }
+  }
 }

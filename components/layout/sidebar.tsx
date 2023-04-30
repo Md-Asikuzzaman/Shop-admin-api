@@ -45,7 +45,7 @@ const Sidebar: NextPage<Props> = ({ menu, setMenu }) => {
           />
         </div>
       </div>
-      <div className='sidebar flex flex-col h-[80vh] bg-wahite mt-6 relative rounded-sm overflow-hidden'>
+      <div className='sidebar flex flex-col h-[80vh] mt-6 relative rounded-sm overflow-hidden'>
         <Link
           className={`flex items-center gap-4 text-md text-slate-500 h-12 ml-8 duration-300 dark:text-slate-400 ${
             router.asPath == '/'
@@ -103,8 +103,7 @@ const Sidebar: NextPage<Props> = ({ menu, setMenu }) => {
 
         <Link
           className={`flex items-center gap-4 text-md text-slate-500 h-12 ml-8 duration-300 dark:text-slate-400 ${
-            router.asPath == '/product' ||
-            router.asPath == '/product/add-product'
+            router.asPath.includes('/product')
               ? 'active'
               : 'hover:text-violet-500 hover:ml-12'
           }`}
@@ -115,7 +114,11 @@ const Sidebar: NextPage<Props> = ({ menu, setMenu }) => {
         </Link>
 
         <Link
-          className='flex items-center gap-4 text-md text-slate-500 h-12 ml-8 hover:text-violet-500 hover:ml-12 duration-300 dark:text-slate-400'
+          className={`flex items-center gap-4 text-md text-slate-500 h-12 ml-8 duration-300 dark:text-slate-400 ${
+            router.asPath.includes('/category')
+              ? 'active'
+              : 'hover:text-violet-500 hover:ml-12'
+          }`}
           href='/category'
         >
           <AiOutlineUnorderedList />

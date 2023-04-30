@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Layout from '@/components/layout/layout';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/hooks';
 import { NextPage } from 'next';
@@ -12,10 +12,13 @@ import {
 import { FormikProps, useFormik } from 'formik';
 import { categoryValidate } from '@/lib/categoryValidate';
 import { toast } from 'react-toastify';
+import Link from 'next/link';
 interface Props {}
 
 const Category: NextPage<Props> = ({}) => {
   const dispatch = useAppDispatch();
+
+  const [click, setClick] = useState(false);
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -39,9 +42,10 @@ const Category: NextPage<Props> = ({}) => {
 
   const formik: FormikProps<CategoryType> = useFormik<CategoryType>({
     initialValues: {
-      category: '',
+      category: click ? 'clicked' : '',
       parent: '',
     },
+
     validate: categoryValidate,
     onSubmit: async (values) => {
       const formData = {
@@ -67,7 +71,10 @@ const Category: NextPage<Props> = ({}) => {
   return (
     <Layout>
       <div className='bg-white rounded-lg shadow-md p-5 dark:bg-slate-800'>
-        <h2 className='text-xl font-bold mb-2 dark:text-slate-300'>
+        <h2
+          onClick={() => setClick(true)}
+          className='text-xl font-bold mb-2 dark:text-slate-300'
+        >
           Add Category
         </h2>
 
@@ -124,32 +131,42 @@ const Category: NextPage<Props> = ({}) => {
           </tr>
         </thead>
         <tbody>
-          {category.loading && (
+          {category.loading ? (
             <tr>
-              <td>loading...</td>
+              <td className='py-6 text-violet-500' colSpan={5}>
+                <b>Loading...</b>
+              </td>
+            </tr>
+          ) : category.category.length > 0 ? (
+            category.category.map((cat) => (
+              <tr
+                key={cat._id}
+                className='h-12 border-b border-slate-200 dark:border-slate-700 dark:text-slate-300'
+              >
+                <td>{cat.category}</td>
+                <td>
+                  {category.category.map((p) =>
+                    p._id === cat.parent ? p.category : ''
+                  )}
+                </td>
+                <td className=' flex gap-2 items-center justify-center h-10'>
+                  <Link href={`/category/edit/${cat._id}`}>
+                    <AiFillEdit className='text-xl cursor-pointer text-slate-500' />
+                  </Link>
+                  <MdDelete
+                    onClick={() => handleDelete(cat._id)}
+                    className='text-xl cursor-pointer text-slate-500'
+                  />
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td className='py-6 text-violet-500' colSpan={5}>
+                <b>No Category Available</b>
+              </td>
             </tr>
           )}
-
-          {category.category.map((cat) => (
-            <tr
-              key={cat._id}
-              className='h-12 border-b border-slate-200 dark:border-slate-700 dark:text-slate-300'
-            >
-              <td>{cat.category}</td>
-              <td>
-                {category.category.map((p) =>
-                  p._id === cat.parent ? p.category : ''
-                )}
-              </td>
-              <td className=' flex gap-2 items-center justify-center h-10'>
-                <AiFillEdit className='text-xl cursor-pointer text-slate-500' />
-                <MdDelete
-                  onClick={() => handleDelete(cat._id)}
-                  className='text-xl cursor-pointer text-slate-500'
-                />
-              </td>
-            </tr>
-          ))}
         </tbody>
       </table>
     </Layout>

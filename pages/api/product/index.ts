@@ -5,6 +5,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 interface Data {
   message?: string;
   products?: any[];
+  newProduct?: any;
 }
 
 export default async function handler(
@@ -26,8 +27,8 @@ export default async function handler(
   if (req.method === 'POST') {
     const data = req.body;
     try {
-      await Product.create(data);
-      res.status(201).json({ message: 'Product created successfully!' });
+      const newProduct = await Product.create(data);
+      res.status(201).json({ newProduct });
     } catch (error) {
       res.status(500).json({ message: 'Something wrong!' });
     }

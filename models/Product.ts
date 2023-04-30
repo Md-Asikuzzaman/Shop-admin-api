@@ -5,8 +5,11 @@ interface ProductType {
   title: string;
   description: string;
   price: number;
+  category: string;
+  color: string;
   photo: string;
 }
+
 
 // 2. Create a Schema corresponding to the document interface.
 const productSchema = new Schema<ProductType>(
@@ -14,6 +17,8 @@ const productSchema = new Schema<ProductType>(
     title: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },
+    category: { type: String },
+    color: { type: String },
     photo: { type: String },
   },
   { timestamps: true }

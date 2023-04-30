@@ -57,6 +57,20 @@ export const deleteCategory = createAsyncThunk(
   }
 );
 
+// UPDATE Category
+export const updateCategory = createAsyncThunk(
+  'product/updateCategory',
+  async (data: any) => {
+    const { id } = data;
+    try {
+      const res = await axios.put(`/api/category/${id}`, data);
+      return res.data;
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+);
+
 const categorySlice = createSlice({
   name: 'category',
   initialState,
@@ -122,6 +136,28 @@ const categorySlice = createSlice({
     );
 
     builder.addCase(deleteCategory.rejected, (state, action) => {
+      state.loading = true;
+      state.error = action.error.message || 'Something went wrong!!!';
+    });
+
+    // UPDATE CATEGORY
+    builder.addCase(updateCategory.pending, (state, action) => {
+      state.loading = true;
+      state.error = '';
+    });
+
+    builder.addCase(
+      updateCategory.fulfilled,
+      (state, action: PayloadAction<any>) => {
+        state.loading = false;
+        state.category = state.category.map((data) =>
+          data._id === action.payload.id ? action.payload?.data : data
+        );
+        state.error = '';
+      }
+    );
+
+    builder.addCase(updateCategory.rejected, (state, action) => {
       state.loading = true;
       state.error = action.error.message || 'Something went wrong!!!';
     });

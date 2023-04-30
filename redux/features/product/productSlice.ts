@@ -7,8 +7,10 @@ interface ProductType {
   description: string;
   price: number;
   photo: string;
-  createdAt?: any;
-  updatedAt?: any;
+  category: string;
+  color: string;
+  createdAt: any;
+  updatedAt: any;
 }
 
 interface DataType {
@@ -23,7 +25,7 @@ const initialState: DataType = {
   error: '',
 };
 
-// FETCH PRODUCTS
+// ADD PRODUCT
 export const fetchProducts = createAsyncThunk(
   'product/fetchProducts',
   async () => {
@@ -36,19 +38,20 @@ export const fetchProducts = createAsyncThunk(
   }
 );
 
-
 // ADD PRODUCT
 export const addProduct = createAsyncThunk(
   'product/addProduct',
   async (data: any) => {
     try {
       const res = await axios.post('/api/product', data);
-      return res.data;
+      console.log('TCL: res', res);
+      return res.data.newProduct;
     } catch (error: any) {
       throw new Error(error);
     }
   }
 );
+
 // DELETE PRODUCT
 export const deleteProduct = createAsyncThunk(
   'product/deleteProduct',
@@ -81,7 +84,7 @@ const productSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    // FETCH PRODUCT
+    // FETCH PRODUCTS
     builder.addCase(fetchProducts.pending, (state, action) => {
       state.loading = true;
       state.products = [];
@@ -98,12 +101,12 @@ const productSlice = createSlice({
     );
 
     builder.addCase(fetchProducts.rejected, (state, action) => {
-      state.loading = false;
+      state.loading = true;
       state.products = [];
-      state.error = action.error.message || 'Something went wrong!!!';
+      state.error = '';
     });
 
-    // ADD PRODUCT
+    // ADD PRODUCTS
     builder.addCase(addProduct.pending, (state, action) => {
       state.loading = true;
       state.error = '';

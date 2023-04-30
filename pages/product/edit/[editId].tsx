@@ -29,6 +29,7 @@ const EditProduct: NextPage<Props> = ({}) => {
   const { editId } = router.query;
 
   const products = useAppSelector((state) => state.product);
+  
   const product = products.products.find((product) =>
     product._id == editId ? product : null
   );

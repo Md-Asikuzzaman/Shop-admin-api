@@ -65,7 +65,7 @@ const Index: NextPage<Props> = ({}) => {
               ) : data.products?.length > 0 ? (
                 data.products.map((product) => (
                   <tr
-                    key={product?._id || Math.random() * 99999}
+                    key={product?._id}
                     className='h-12 border-b border-slate-200 dark:border-slate-700 dark:text-slate-300'
                   >
                     <td>
