@@ -27,15 +27,16 @@ export default async function handler(
   // UPDATE PRODUCT
   if (req.method === 'PUT') {
     const { id } = req.query;
-    const { formData: data } = req.body;
+    const formData = req.body;
 
     try {
       const exist = await Product.findOne({ _id: id });
       if (exist) {
-        await Product.findByIdAndUpdate({ _id: id }, data, { new: true });
+        const data = await Product.findByIdAndUpdate({ _id: id }, formData, {
+          new: true,
+        });
+        res.status(200).json({ message: 'Product Updated!!!', id, data });
       }
-
-      res.status(200).json({ message: 'Product Updated!!!', id, data });
     } catch (error) {
       res.status(500).json({ message: 'Something wrong!' });
     }

@@ -25,7 +25,7 @@ const initialState: DataType = {
   error: '',
 };
 
-// ADD PRODUCT
+// FETCH PRODUCTS
 export const fetchProducts = createAsyncThunk(
   'product/fetchProducts',
   async () => {
@@ -44,7 +44,6 @@ export const addProduct = createAsyncThunk(
   async (data: any) => {
     try {
       const res = await axios.post('/api/product', data);
-      console.log('TCL: res', res);
       return res.data.newProduct;
     } catch (error: any) {
       throw new Error(error);
@@ -68,7 +67,7 @@ export const deleteProduct = createAsyncThunk(
 export const updateProduct = createAsyncThunk(
   'product/updateProduct',
   async (data: any) => {
-    const { id } = data.formData;
+    const { id } = data;
 
     try {
       const res = await axios.put(`/api/product/${id}`, data);

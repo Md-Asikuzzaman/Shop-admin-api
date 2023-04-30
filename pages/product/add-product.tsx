@@ -11,10 +11,7 @@ import { useState } from 'react';
 import { productValidate } from '@/lib/productValidate';
 import ReactImageFileToBase64 from 'react-file-image-to-base64';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/hooks';
-import {
-  // fetchProducts,
-  addProduct,
-} from '@/redux/features/product/productSlice';
+import { addProduct } from '@/redux/features/product/productSlice';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { fetchCategories } from '@/redux/features/category/categorySlice';
@@ -25,14 +22,12 @@ const AddProduct: NextPage<Props> = ({}) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  // FETCH PRODUCTS
+  // FETCH CATEGORY
   useEffect(() => {
-    // dispatch(fetchProducts());
     dispatch(fetchCategories());
   }, [dispatch]);
 
   const category = useAppSelector((state) => state.category);
-  // console.log('TCL: category', category.category);
 
   // FORM VALIDATION
   const [images, setImages] = useState<string>('');
